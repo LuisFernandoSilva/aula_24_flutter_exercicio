@@ -90,8 +90,11 @@ class _TaskPageState extends State<TaskPage> {
                             updateTask();
                             return;
                           }
+                          setState(() {
+                            saveTask();
+                          });
 
-                          saveTask();
+                          _taskController.clear();
                         },
                       ),
                     ),
@@ -120,9 +123,10 @@ class _TaskPageState extends State<TaskPage> {
                           trailing: Checkbox(
                               value: snapshot.data[index].finish,
                               onChanged: (value) {
-                                snapshot.data[index].finish = value;
-                                taskRepository.updateTask(_task);
-                                setState(() {});
+                                setState(() {
+                                  snapshot.data[index].finish = value;
+                                  taskRepository.updateTask(_task);
+                                });
                               }),
                           onLongPress: () {
                             setState(() {
@@ -146,22 +150,20 @@ class _TaskPageState extends State<TaskPage> {
 
   void saveTask() async {
     final saved = await taskRepository.saveTask(_task);
+    taskRepository.recoverTask();
 
     if (!saved) {
-      showSnackBar('Não foi possível salvar o usuário!');
+      showSnackBar('Não foi possível salvar a tarefa!');
       return;
     }
-
-    Navigator.of(context).pop(_task);
   }
 
   void updateTask() async {
     final update = await taskRepository.updateTask(_task);
     if (!update) {
-      showSnackBar('Não foi possível atualizar o usuário!');
+      showSnackBar('Não foi possível atualizar atarefa!');
       return;
     }
-    Navigator.of(context).pop(_task);
   }
 
   void showSnackBar(String mensage) {
