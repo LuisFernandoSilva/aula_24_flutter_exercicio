@@ -29,6 +29,7 @@ class _TaskPageState extends State<TaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('To do List'),
       ),
