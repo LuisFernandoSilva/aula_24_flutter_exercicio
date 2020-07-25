@@ -124,9 +124,10 @@ class _TaskPageState extends State<TaskPage> {
                           trailing: Checkbox(
                               value: snapshot.data[index].finish,
                               onChanged: (value) {
+                                snapshot.data[index].finish = value;
                                 setState(() {
-                                  snapshot.data[index].finish = value;
-                                  taskRepository.updateTask(_task);
+                                  taskRepository
+                                      .updateTask(snapshot.data[index]);
                                 });
                               }),
                           onLongPress: () {
@@ -162,7 +163,7 @@ class _TaskPageState extends State<TaskPage> {
   void updateTask() async {
     final update = await taskRepository.updateTask(_task);
     if (!update) {
-      showSnackBar('Não foi possível atualizar atarefa!');
+      showSnackBar('Não foi possível atualizar a tarefa!');
       return;
     }
   }
